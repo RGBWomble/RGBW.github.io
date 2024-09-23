@@ -3,12 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My First GitHub Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Ensure the path is correct -->
+    <title>Social Links</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars */
+            background: black; /* Background color */
+        }
+
+        #globeCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Behind all other elements */
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2; /* Above the globe */
+            color: white; /* Text color */
+        }
+
+        .social-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            color: white; /* Text color */
+            text-decoration: none;
+            border: none; /* No border */
+            background: transparent; /* Fully transparent background */
+            transition: color 0.3s; /* Adding transition for text color on hover */
+        }
+
+            .social-button:hover {
+                color: rgba(255, 255, 255, 0.8); /* Slightly lighten text color on hover */
+            }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 600px; /* Set the desired maximum width of your logo (doubled size) */
+            width: 100%; /* Make it responsive, filling up the space */
+        }
+    </style>
 </head>
 <body>
-    <h1 id="greeting">Hi!</h1>
-    <script src="script.js"></script>
+    <canvas id="globeCanvas"></canvas>
+
+    <audio id="background-music" loop>
+        <source src="background-music.mp3" type="audio/mp3"> <!-- Ensure the path to your audio file is correct -->
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Initialize scene, camera, and renderer for the globe
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('globeCanvas'), alpha: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create globe geometry
+        const geometry = new THREE.SphereGeometry(5, 32, 32);
+        const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const wireframe = new THREE.LineSegments(new THREE.WireframeGeometry(geometry), material);
+        scene.add(wireframe);
+
+        camera.position.z = 10;
+
+        // Animation loop for the globe
+        function animate() {
+            requestAnimationFrame(animate);
+            wireframe.rotation.x += 0.01;
+            wireframe.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Play background music
+        const audio = document.getElementById('background-music');
+        audio.volume = 0.25; // Set volume to 25%
+        audio.play(); // Play audio
+    </script>
+
+    <div class="container">
+        <img class="logo" src="your-logo.png" alt="Logo"> <!-- Replace with your logo source -->
+        <div class="social-buttons">
+            <a href="https://www.youtube.com/" class="social-button" target="_blank"><span>YouTube</span></a>
+            <a href="https://store.steampowered.com/" class="social-button" target="_blank"><span>Steam</span></a>
+            <a href="https://discord.com/" class="social-button" target="_blank"><span>Discord</span></a>
+        </div>
+    </div>
 </body>
 </html>

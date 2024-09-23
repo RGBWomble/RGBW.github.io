@@ -1,13 +1,130 @@
+@font-face {
+    font-family: 'PlanetKosmos';
+    src: url('PlanetKosmos.ttf') format('truetype'); /* Ensure this path is correct */
+}
+
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: black;
+    font-family: 'Times New Roman', serif; /* You may keep this for body text */
+}
+
+#bgVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.logo {
+    width: 150px; /* Adjust size as needed */
+    margin-bottom: 30px; /* Space between logo and buttons */
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+/* Button styles with bright glowing border */
+.social-button {
+    width: 200px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+    background: transparent; /* Fully transparent background */
+    position: relative; /* Required for the border effect */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 24px;
+    color: white; /* Default text color */
+    font-family: 'PlanetKosmos', sans-serif; /* Changed to the new font */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none; /* Prevent underline */
+    overflow: hidden; /* Contain the pseudo-element anyway */
+    transition: transform 0.3s ease; /* Added transition */
 }
 
-h1 {
-    color: #333;
+    /* This pseudo-element will act like a text border */
+    .social-button::before {
+        content: '';
+        position: absolute;
+        top: -5px; /* Adjust for border thickness */
+        left: -5px; /* Adjust for border thickness */
+        right: -5px; /* Adjust for border thickness */
+        bottom: -5px; /* Adjust for border thickness */
+        border-radius: 12px; /* Slightly larger than the button for a rounded border */
+        z-index: -1; /* Place it behind the text */
+    }
+
+/* Keyframes for the color-changing border */
+@keyframes borderAndGlow {
+    0% {
+        border-color: transparent; /* Hide border color when not hovering */
+        box-shadow: none; /* No glow when not hovering */
+    }
+
+    100% {
+        border-color: transparent; /* Hide border color when not hovering */
+        box-shadow: none; /* No glow when not hovering */
+    }
+}
+
+.social-button:hover::before {
+    border-color: white; /* Change to solid white border on hover */
+    box-shadow: 0 0 15px white; /* Glow effect for the border on hover */
+}
+
+.social-button:hover {
+    transform: scale(1.1); /* Scale up on hover */
+    /* background: rgba(255, 255, 255, 0.1); */ /* Remove this line to avoid background color change */
+}
+
+/* Text shadow effect with color animation when not hovered */
+.social-button span {
+    position: relative; /* Keep it in the same stacking context */
+    z-index: 1; /* Above the pseudo-element */
+    animation: textShadowAnimation 5s infinite alternate; /* Animation for text-shadow */
+    /* Updated to make the black outline thicker */
+    text-shadow: 1px 1px 0 black, 1px 1px 0 black, 2px 2px 0 black, -1px -1px 0 black, -1px -1px 0 black; /* Thicker black border effect around text */
+}
+
+/* Text shadow keyframes for non-hover */
+@keyframes textShadowAnimation {
+    0% {
+        text-shadow: 0 0 10px #fc05c3, 0 0 20px #fc05c3, 0 0 30px #fc05c3; /* Pink */
+    }
+
+    33% {
+        text-shadow: 0 0 10px #05f4fc, 0 0 20px #05f4fc, 0 0 30px #05f4fc; /* Light Blue */
+    }
+
+    66% {
+        text-shadow: 0 0 10px #9105fc, 0 0 20px #9105fc, 0 0 30px #9105fc; /* Purple */
+    }
+
+    100% {
+        text-shadow: 0 0 10px #fc05c3, 0 0 20px #fc05c3, 0 0 30px #fc05c3; /* Back to Pink */
+    }
+}
+
+/* New hover effect for buttons */
+.social-button:hover span {
+    animation: none; /* Stop the text shadow animation on hover */
+    text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white; /* Glowing white text on hover */
+    color: white; /* Keep the text white on hover */
 }
