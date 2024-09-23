@@ -1,0 +1,82 @@
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set up the background video */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  object-fit: cover;
+}
+
+/* Logo styling */
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.logo img {
+  width: 150px;
+  height: auto;
+}
+
+/* Container for the social buttons */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Social buttons */
+.social-button {
+  background: transparent;
+  border: none;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-button img {
+  width: 100px;
+  height: auto;
+}
+
+/* Hover effects for buttons */
+.social-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px 5px rgba(255, 20, 147, 0.8),
+              0 0 20px 10px rgba(147, 112, 219, 0.6),
+              0 0 30px 15px rgba(135, 206, 250, 0.5);
+}
+
+/* Glowing outline animation */
+@keyframes glow {
+  0% { box-shadow: 0 0 5px #FF1493; }
+  50% { box-shadow: 0 0 15px #9370DB; }
+  100% { box-shadow: 0 0 20px #87CEFA; }
+}
+
+.social-button:hover {
+  animation: glow 1s infinite alternate;
+}
+
+/* Audio controls (hidden but still active) */
+#bg-music {
+  display: none;
+}
