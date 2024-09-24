@@ -208,17 +208,15 @@
             audio.volume = 0.25;
             audio.play();
 
+            // Notification for copying to clipboard
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerHTML = `<div class="globe-container"><canvas id="smallGlobeCanvas" width="30" height="30"></canvas></div> Copied To Clipboard`;
-
             document.body.appendChild(notification);
 
-            const discordButton = document.querySelector('.social-button:nth-child(3)');
-
+            const discordButton = document.querySelector('#discordButton');
             discordButton.addEventListener('click', function (event) {
-                event.preventDefault();
-
+                event.preventDefault(); // Prevent the default action
                 navigator.clipboard.writeText('rgbwomble').then(() => {
                     notification.classList.add('show');
 
@@ -261,7 +259,8 @@
         <div class="social-buttons">
             <a href="https://www.youtube.com/@RGBWomble" class="social-button" target="_blank"><span>YouTube</span></a>
             <a href="https://steamcommunity.com/id/Airbus-A320/" class="social-button" target="_blank"><span>Steam</span></a>
-            <button class="social-button"><span>Discord</span></button>
+            <a href="https://vrchat.com/home/user/usr_1a8c7859-8ed5-47a4-a39b-8a802cbd4932" class="social-button" target="_blank"><span>VRChat</span></a>
+            <button class="social-button" id="discordButton"><span>Discord</span></button>
         </div>
     </div>
 </body>
