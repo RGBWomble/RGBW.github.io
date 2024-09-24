@@ -13,7 +13,7 @@ body {
     align-items: center;
     overflow: hidden;
     background: black;
-    font-family: 'Times New Roman', serif; /* You may keep this for body text */
+    font-family: 'Times New Roman', serif;
 }
 
 #bgVideo {
@@ -28,7 +28,7 @@ body {
 
 .logo {
     width: 150px; /* Adjust size as needed */
-    margin-bottom: 30px; /* Space between logo and buttons */
+    margin-bottom: 30px;
 }
 
 .social-buttons {
@@ -39,71 +39,64 @@ body {
     position: relative;
 }
 
-/* Button styles with bright glowing border */
 .social-button {
     width: 200px;
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: transparent; /* Fully transparent background */
-    position: relative; /* Required for the border effect */
-    border-radius: 10px; /* Rounded corners */
+    background: transparent;
+    position: relative;
+    border-radius: 10px;
     font-size: 24px;
-    color: white; /* Default text color */
-    font-family: 'PlanetKosmos', sans-serif; /* Changed to the new font */
+    color: white;
+    font-family: 'PlanetKosmos', sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-decoration: none; /* Prevent underline */
-    overflow: hidden; /* Contain the pseudo-element anyway */
-    transition: transform 0.3s ease; /* Added transition */
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
-    /* This pseudo-element will act like a text border */
     .social-button::before {
         content: '';
         position: absolute;
-        top: -5px; /* Adjust for border thickness */
-        left: -5px; /* Adjust for border thickness */
-        right: -5px; /* Adjust for border thickness */
-        bottom: -5px; /* Adjust for border thickness */
-        border-radius: 12px; /* Slightly larger than the button for a rounded border */
-        z-index: -1; /* Place it behind the text */
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border-radius: 12px;
+        z-index: -1;
     }
 
-/* Keyframes for the color-changing border */
 @keyframes borderAndGlow {
     0% {
-        border-color: transparent; /* Hide border color when not hovering */
-        box-shadow: none; /* No glow when not hovering */
+        border-color: transparent;
+        box-shadow: none;
     }
 
     100% {
-        border-color: transparent; /* Hide border color when not hovering */
-        box-shadow: none; /* No glow when not hovering */
+        border-color: transparent;
+        box-shadow: none;
     }
 }
 
 .social-button:hover::before {
-    border-color: white; /* Change to solid white border on hover */
-    box-shadow: 0 0 15px white; /* Glow effect for the border on hover */
+    border-color: white;
+    box-shadow: 0 0 15px white;
 }
 
 .social-button:hover {
-    transform: scale(1.1); /* Scale up on hover */
-    /* background: rgba(255, 255, 255, 0.1); */ /* Remove this line to avoid background color change */
+    transform: scale(1.1);
 }
 
-/* Text shadow effect with color animation when not hovered */
 .social-button span {
-    position: relative; /* Keep it in the same stacking context */
-    z-index: 1; /* Above the pseudo-element */
-    animation: textShadowAnimation 5s infinite alternate; /* Animation for text-shadow */
-    /* Updated to make the black outline thicker */
-    text-shadow: 1px 1px 0 black, 1px 1px 0 black, 2px 2px 0 black, -1px -1px 0 black, -1px -1px 0 black; /* Thicker black border effect around text */
+    position: relative;
+    z-index: 1;
+    animation: textShadowAnimation 5s infinite alternate;
+    text-shadow: 1px 1px 0 black, 1px 1px 0 black, 2px 2px 0 black, -1px -1px 0 black, -1px -1px 0 black;
 }
 
-/* Text shadow keyframes for non-hover */
 @keyframes textShadowAnimation {
     0% {
         text-shadow: 0 0 10px #fc05c3, 0 0 20px #fc05c3, 0 0 30px #fc05c3; /* Pink */
@@ -122,9 +115,38 @@ body {
     }
 }
 
-/* New hover effect for buttons */
 .social-button:hover span {
-    animation: none; /* Stop the text shadow animation on hover */
-    text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white; /* Glowing white text on hover */
-    color: white; /* Keep the text white on hover */
+    animation: none;
+    text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white;
+    color: white;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #fc03db, #03fcf4);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    transform: translate(-50%, 50%);
+    z-index: 10;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+}
+
+    .notification.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+.globe-container {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }

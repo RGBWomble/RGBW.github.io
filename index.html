@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +15,7 @@
             align-items: center;
             height: 100vh;
             position: relative;
+            flex-direction: column;
         }
 
         #globeCanvas {
@@ -58,7 +58,7 @@
 
         .logo {
             display: block;
-            margin: 0 auto;
+            margin: 20px 0;
             max-width: 600px;
             width: 100%;
         }
@@ -76,9 +76,9 @@
             opacity: 0;
             transform: translate(-50%, 50%);
             z-index: 10;
-            font-family: Arial, sans-serif; /* Set a basic font for notification */
+            font-family: Arial, sans-serif;
             display: flex;
-            align-items: center; /* Align items in the notification flex container */
+            align-items: center;
         }
 
             .notification.show {
@@ -88,13 +88,12 @@
 
         .globe-container {
             position: relative;
-            width: 30px; /* Adjusted width for the smaller globe */
-            height: 30px; /* Adjusted height for the smaller globe */
-            margin-right: 10px; /* Space between globe and text */
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
         }
     </style>
 </head>
-
 <body>
     <canvas id="globeCanvas"></canvas>
 
@@ -106,7 +105,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Main globe setup
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('globeCanvas'), alpha: true });
@@ -119,24 +117,34 @@
 
             resizeCanvas();
 
+            // Create a grid helper with the new color #f707d7
+            const gridSize = 1000; // Size of the grid
+            const divisions = 100;  // More divisions for a finer grid
+            const gridHelper = new THREE.GridHelper(gridSize, divisions, 0xf707d7, 0xf707d7); // Updated color
+            gridHelper.position.y = 0;
+            gridHelper.position.z = 0; // Start positioned at Z = 0
+            scene.add(gridHelper);
+
+            // Create the globe
             const geometry = new THREE.SphereGeometry(5, 32, 32);
             const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
             const globe = new THREE.Mesh(geometry, material);
+            globe.position.set(0, 10, 91);
             scene.add(globe);
 
-            camera.position.z = 10;
+            camera.position.set(0, 10, 100); // Position camera
 
             let isDragging = false;
             let previousMousePosition = { x: 0, y: 0 };
             let velocity = { x: 0, y: 0 };
 
-            function onMouseDown(event) {
+            window.addEventListener('mousedown', (event) => {
                 isDragging = true;
                 previousMousePosition = { x: event.clientX, y: event.clientY };
-                velocity = { x: 0, y: 0 };
-            }
+                velocity = { x: 0, y: 0 }; // Reset velocity on drag start
+            });
 
-            function onMouseMove(event) {
+            window.addEventListener('mousemove', (event) => {
                 if (isDragging) {
                     const deltaMove = {
                         x: event.clientX - previousMousePosition.x,
@@ -148,36 +156,43 @@
 
                     previousMousePosition = { x: event.clientX, y: event.clientY };
 
-                    velocity.x = deltaMove.x * 0.1;
-                    velocity.y = deltaMove.y * 0.1;
+                    // Update velocity based on mouse movement
+                    velocity.x = deltaMove.x * 0.01;
+                    velocity.y = deltaMove.y * 0.01;
                 }
-            }
-
-            function onMouseUp() {
-                isDragging = false;
-            }
-
-            window.addEventListener('mousedown', onMouseDown, false);
-            window.addEventListener('mousemove', onMouseMove, false);
-            window.addEventListener('mouseup', onMouseUp, false);
-
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                camera.position.z = 10;
             });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false; // Stop dragging
+            });
+
+            window.addEventListener('resize', resizeCanvas);
 
             function animate() {
                 requestAnimationFrame(animate);
-                globe.rotation.y += 0.005;
-                globe.rotation.x += 0.002;
 
+                // Continuous rotation for the globe
+                globe.rotation.y += 0.005; // Slow rotation on Y-axis
+                globe.rotation.x += 0.002; // Slow rotation on X-axis
+
+                // Move the grid towards the camera
+                gridHelper.position.z += 0.1; // Move grid towards camera slowly
+
+                // Optionally control the grid's maximum distance
+                if (gridHelper.position.z >= 50) { // Adjust this value as needed
+                    gridHelper.position.z = 0; // Reset to start position for continuous movement
+                }
+
+                // Apply velocity to globe rotation when not dragging
                 if (!isDragging) {
                     globe.rotation.y += velocity.x;
                     globe.rotation.x += velocity.y;
 
+                    // Dampen the velocity
                     velocity.x *= 0.95;
                     velocity.y *= 0.95;
 
+                    // Smoothly stop when the drag ends
                     if (Math.abs(velocity.x) < 0.001 && Math.abs(velocity.y) < 0.001) {
                         velocity.x = 0;
                         velocity.y = 0;
@@ -186,6 +201,7 @@
 
                 renderer.render(scene, camera);
             }
+
             animate();
 
             const audio = document.getElementById('background-music');
@@ -206,26 +222,24 @@
                 navigator.clipboard.writeText('rgbwomble').then(() => {
                     notification.classList.add('show');
 
-                    // Small globe setup - independent of the big globe
+                    // Small globe setup
                     const smallGlobeCanvas = document.getElementById('smallGlobeCanvas');
                     const smallGlobeRenderer = new THREE.WebGLRenderer({ canvas: smallGlobeCanvas, alpha: true });
-                    smallGlobeRenderer.setSize(30, 30); // Size for the small globe
+                    smallGlobeRenderer.setSize(30, 30);
 
                     const smallGlobeScene = new THREE.Scene();
                     const smallGlobeCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
                     smallGlobeCamera.position.z = 1;
 
-                    // Increased radius to 0.6 and reduced segments to 6
                     const smallGlobeGeometry = new THREE.SphereGeometry(0.6, 6, 6);
                     const smallGlobeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
                     const smallGlobe = new THREE.Mesh(smallGlobeGeometry, smallGlobeMaterial);
-                    smallGlobe.position.set(0, 0, 0); // Position the small globe at the origin
+                    smallGlobe.position.set(0, 0, 0);
                     smallGlobeScene.add(smallGlobe);
 
-                    // Function to animate the small globe
                     function animateSmallGlobe() {
                         requestAnimationFrame(animateSmallGlobe);
-                        smallGlobe.rotation.y += 0.02; // Rotate small globe
+                        smallGlobe.rotation.y += 0.02;
                         smallGlobe.rotation.x += 0.01;
                         smallGlobeRenderer.render(smallGlobeScene, smallGlobeCamera);
                     }
@@ -251,5 +265,4 @@
         </div>
     </div>
 </body>
-
 </html>
